@@ -1,0 +1,6 @@
+[ocp_web]
+ocp-web ansible_host=10.1.1.8 hostname=ocp_web
+
+[ocp_web:vars]
+ansible_python_interpreter=/usr/bin/python3
+

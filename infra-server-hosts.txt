@@ -1,0 +1,57 @@
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+
+## ..:: Managament Network ::..
+## ----------------------------------------------------------------------------
+
+10.1.1.4        infra-server-mgmt.ocp.x-wide.cloud        infra-server-mgmt
+10.1.1.4        infra-server.ocp.x-wide.cloud             infra-server
+
+## ..:: Internal Network ::..
+## ----------------------------------------------------------------------------
+
+10.1.20.20      infra-server-host.ocp.x-wide.cloud        infra-server-host
+10.1.20.30      registry.ocp.x-wide.cloud                 registry
+
+## ..:: External Network ::..
+## ----------------------------------------------------------------------------
+
+10.1.10.201     gitlab.ocp.x-wide.cloud                   gitlab
+10.1.10.202     grafana.ocp.x-wide.cloud                  grafana
+10.1.10.203     prometheus.ocp.x-wide.cloud               prometheus
+10.1.10.204     n-controller.ocp.x-wide.cloud             n-controller
+10.1.10.205     rancher-server.ocp.x-wide.cloud           rancher-server
+10.1.10.206     prometheus-k8s.ocp.x-wide.cloud           prometheus-k8s
+10.1.10.207     elk.ocp.x-wide.cloud                      elk
+10.1.10.209     firefox.ocp.x-wide.cloud                  firefox
+
+# ..:: DNS for ocp-web node and ocp-bootstrap nodes ::..
+10.1.1.6    api-int.ocp.x-wide.cloud                 api-int
+10.1.1.6    api.ocp.x-wide.cloud                     api
+10.1.1.6    oauth-openshift.apps.ocp.x-wide.cloud    oauth-openshift.apps
+10.1.1.6    aspen-node-1.ocp.x-wide.cloud            aspen-node-1
+10.1.1.6    provisioner-web.ocp.x-wide.cloud         provisioner-web
+10.1.1.6    ocp-web.ocp.x-wide.cloud                 ocp-web
+10.1.1.15   ocp-bootstrap.ocp.x-wide.cloud           ocp-bootstrap
+
+# ..:: ETCd cluster lives on the masters ::..
+10.1.1.7    etcd-0.ocp.x-wide.cloud                  etcd-0
+10.1.1.8    etcd-1.ocp.x-wide.cloud                  etcd-1
+10.1.1.9    etcd-2.ocp.x-wide.cloud                  etcd-2
+
+# ..:: DNS for master nodes ::..
+10.1.1.7    master-1.ocp.x-wide.cloud                master-1
+10.1.1.8    master-2.ocp.x-wide.cloud                master-2
+10.1.1.9    master-3.ocp.x-wide.cloud                master-3
+
+# ..:: DNS for worker nodes ::..
+10.1.1.10   worker-1.ocp.x-wide.cloud                worker-1
+10.1.1.11   worker-2.ocp.x-wide.cloud                worker-2
+10.1.1.12   worker-3.ocp.x-wide.cloud                worker-3

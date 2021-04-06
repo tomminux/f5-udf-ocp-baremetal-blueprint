@@ -1,0 +1,85 @@
+## ----------------------------------------------------------------------------
+## ..:: ocp-web installation ::..
+## ----------------------------------------------------------------------------
+
+## Installing ocp-web Server
+- hosts: ocp-web
+  remote_user: root
+  tasks:
+
+    - name: Upgrading all packages to the latest version
+      apt:
+        update_cache: yes
+        upgrade: dist
+        
+    - name: Remove resolv.conf link
+      file:
+        path: /etc/resolv.conf
+        state: absent
+
+    - name: Copy resolv.conf file
+      copy:
+        src: resolv.conf
+        dest: /etc/resolv.conf
+
+    - name: setting hostname
+      template:
+        src: hostname.j2
+        dest: /etc/hostname
+
+    ## Installing NGINX OSS 
+    - name: installing nginx OSS
+      apt:
+        pkg:
+        - nginx    
+
+    - name: Copy nginx.conf files
+      copy:
+        src: ocp-web/
+        dest: /etc/nginx/
+
+    - name: starting nginx 
+      service:
+        name: nginx
+        state: started
+
+    - name: initial nginx config file
+      file:
+        src: /etc/nginx/nginx.conf-initial
+        dest: /etc/nginx/nginx.conf
+        state: link
+
+    - name: starting nginx 
+      service:
+        name: nginx
+        enabled: yes 
+
+    ## TELEGRAF
+    - name: Adding influx apt-key
+      apt_key:
+        url: https://repos.influxdata.com/influxdb.key
+        state: present
+
+    - name: Adding Influx apt reporisotries
+      shell: echo "deb https://repos.influxdata.com/ubuntu `lsb_release -cs` stable\n" > /etc/apt/sources.list.d/influxdb.list
+
+    - name: Upgrading all packages to the latest version
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Installing Telegraf
+      apt:
+        pkg:
+        - telegraf
+
+    - name: Copying Telegraf configuration file
+      template:
+        src: telegraf.conf.j2
+        dest: /etc/telegraf/telegraf.conf
+
+    ## Staring Telegraf Agent
+    - name: Restarting Telegraf agent
+      service:
+        name: telegraf
+        state: restarted

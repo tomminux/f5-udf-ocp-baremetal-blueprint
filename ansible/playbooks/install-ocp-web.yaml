@@ -102,7 +102,6 @@
 
     - name: Changing "html" nginx dir permissions
       shell: chmod -R g+srwx /usr/share/nginx/html/
-      warn: false
     
     - name: download OCP related executables
       get_url:
@@ -142,27 +141,51 @@
         remote_src: yes
 
     - name: Copy install-config.yaml file
-      copy:
+      template:
         src: install-config.yaml.j2
         dest: /usr/share/nginx/html/installations/install-config.yaml
 
     - name: Copy install-config.yaml file (backup)
-      copy:
+      template:
         src: install-config.yaml.j2
         dest: /usr/share/nginx/html/installations/install-config.yaml-backup
 
     - name: Openshift install preparation - Creating manifest files
       shell: /usr/share/nginx/html/installations/openshift-install create manifests --dir=/usr/share/nginx/html/installations/
 
+    - name: Configuring masters as non schedulable
+      replace:
+        path: /usr/share/nginx/html/installations/manifests/cluster-scheduler-02-config.yml
+        regexp: 'true'
+        replace: "false"
+
     - name: Openshift install preparation - Creating ignition files
       shell: /usr/share/nginx/html/installations/openshift-install create ignition-configs --dir=/usr/share/nginx/html/installations/
 
     - name: Openshift install preparation - Creating ignition files
       shell: chmod o+r /usr/share/nginx/html/installations/*
-      warn: false
 
     - name: Copy source.rc for root
       copy:
         src: ocp-web/source.rc
         dest: /root
+
+## ----------------------------------------------------------------------------
+## ..:: ocp-allnodes perparation ::..
+## ----------------------------------------------------------------------------
+
+## Working on all nodes in the OCP Cluster
+- hosts: ocp-bootstrap
+  remote_user: root
+  tasks:
+
+    - name: download RHCOS Kernel from ocp-web
+      get_url:
+        url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
+        dest: /boot/vmlinuz-rhcos
+
+    - name: download RHCOS Initramfs from ocp-web
+      get_url:
+        url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
+        dest: /boot/initramfs-rhcos.img
 

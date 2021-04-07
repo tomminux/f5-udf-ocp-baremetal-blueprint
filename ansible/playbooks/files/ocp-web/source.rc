@@ -1,0 +1,2 @@
+export KUBECONFIG=/usr/share/nginx/html/installations/auth/kubeconfig
+PATH=$PATH:/usr/share/nginx/html/installations

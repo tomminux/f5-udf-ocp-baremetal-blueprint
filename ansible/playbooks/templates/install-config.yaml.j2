@@ -1,0 +1,23 @@
+apiVersion: v1
+baseDomain: f5-udf.com
+compute:
+- name: worker
+  replicas: 0
+controlPlane:
+  name: master
+  replicas: 3
+metadata:
+  name: ocp
+networking:
+  clusterNetwork:
+  - cidr: 10.244.0.0/16
+    hostPrefix: 24
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 192.168.1.0/24
+platform:
+  none: {}
+## Get your secret and put it below.
+pullSecret: '{{ redhat_pull_secret }}'
+## The default SSH key that will be programmed for `core` user. - do not change this for UDF
+sshKey: '{{ udf_access_public_key }}'

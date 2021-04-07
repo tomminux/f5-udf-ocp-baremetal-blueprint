@@ -102,8 +102,67 @@
 
     - name: Changing "html" nginx dir permissions
       shell: chmod -R g+srwx /usr/share/nginx/html/
+      warn: false
     
     - name: download OCP related executables
-      shell: wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-install-linux-{{ ocp_releease }}.tar.gz
-      args:
-        chdir: /usr/share/nginx/html/installations
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-install-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+    
+    - name: download OCP related executables
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-client-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+    
+    - name: download RHCOS related files
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
+        dest: /usr/share/nginx/html/installations
+    
+    - name: download RHCOS related files
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
+        dest: /usr/share/nginx/html/installations
+
+    - name: download RHCOS related files
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-rootfs.x86_64.img
+        dest: /usr/share/nginx/html/installations
+
+    - name: Unarchive linux OCP Client
+      ansible.builtin.unarchive:
+        src: /usr/share/nginx/html/installations/openshift-client-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+        remote_src: yes
+
+    - name: Unarchive linux OCP Installer
+      ansible.builtin.unarchive:
+        src: /usr/share/nginx/html/installations/openshift-install-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+        remote_src: yes
+
+    - name: Copy install-config.yaml file
+      copy:
+        src: install-config.yaml.j2
+        dest: /usr/share/nginx/html/installations/install-config.yaml
+
+    - name: Copy install-config.yaml file (backup)
+      copy:
+        src: install-config.yaml.j2
+        dest: /usr/share/nginx/html/installations/install-config.yaml-backup
+
+    - name: Openshift install preparation - Creating manifest files
+      shell: /usr/share/nginx/html/installations/openshift-install create manifests --dir=/usr/share/nginx/html/installations/
+
+    - name: Openshift install preparation - Creating ignition files
+      shell: /usr/share/nginx/html/installations/openshift-install create ignition-configs --dir=/usr/share/nginx/html/installations/
+
+    - name: Openshift install preparation - Creating ignition files
+      shell: chmod o+r /usr/share/nginx/html/installations/*
+      warn: false
+
+    - name: Copy source.rc for root
+      copy:
+        src: ocp-web/source.rc
+        dest: /root
+

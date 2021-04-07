@@ -27,33 +27,6 @@
         src: hostname.j2
         dest: /etc/hostname
 
-    ## Installing NGINX OSS 
-    - name: installing nginx OSS
-      apt:
-        pkg:
-        - nginx    
-
-    - name: Copy nginx.conf files
-      copy:
-        src: ocp-web/
-        dest: /etc/nginx/
-
-    - name: starting nginx 
-      service:
-        name: nginx
-        state: started
-
-    - name: initial nginx config file
-      file:
-        src: /etc/nginx/nginx.conf-initial
-        dest: /etc/nginx/nginx.conf
-        state: link
-
-    - name: starting nginx 
-      service:
-        name: nginx
-        enabled: yes 
-
     ## TELEGRAF
     - name: Adding influx apt-key
       apt_key:
@@ -83,3 +56,54 @@
       service:
         name: telegraf
         state: restarted
+
+    ## Installing NGINX OSS 
+    - name: installing nginx OSS
+      apt:
+        pkg:
+        - nginx    
+
+    - name: Copy nginx.conf files
+      copy:
+        src: ocp-web/
+        dest: /etc/nginx/
+
+    - name: starting nginx 
+      service:
+        name: nginx
+        state: started
+
+    - name: deleting nginx.conf original file
+      file:
+        path: /etc/nginx/nginx.conf
+        state: absent
+
+    - name: initial nginx config file
+      file:
+        src: /etc/nginx/nginx.conf-initial
+        dest: /etc/nginx/nginx.conf
+        state: link
+
+    - name: enabling nginx at boot time
+      service:
+        name: nginx
+        enabled: yes 
+
+    - name: starting nginx 
+      service:
+        name: nginx
+        state: restarted
+
+   ## Peparing "installations" directory
+    - name: Create /usr/share/nginx/html/installations directory
+      file:
+        path: /usr/share/nginx/html/installations
+        state: directory
+
+    - name: Changing "html" nginx dir permissions
+      shell: chmod -R g+srwx /usr/share/nginx/html/
+    
+    - name: download OCP related executables
+      shell: wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-install-linux-{{ ocp_releease }}.tar.gz
+      args:
+        chdir: /usr/share/nginx/html/installations

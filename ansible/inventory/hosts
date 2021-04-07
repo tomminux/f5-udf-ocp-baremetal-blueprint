@@ -3,4 +3,6 @@ ocp-web ansible_host=10.1.1.8 hostname=ocp-web
 
 [ocp_web:vars]
 ansible_python_interpreter=/usr/bin/python3
+ocp_release=4.7.4
+rhcos_release=4.7.0
 

@@ -1,3 +1,11 @@
+# IMPORTANT --> UPDATE THE BLUEPRINT
+
+- nginx conf files
+- timezone on ocp-web
+- resolv.conf on ocp-web
+- clean installation directory
+
+
 # UDF Blueprint: codename-thor - LogFile
 
 ## UDF Deployment Machines Configuration

@@ -7,6 +7,10 @@
   remote_user: root
   tasks:
 
+    - name: Set timezone to Europe/Rome
+      timezone:
+        name: Europe/Rome
+        
     - name: Upgrading all packages to the latest version
       apt:
         update_cache: yes

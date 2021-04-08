@@ -170,22 +170,22 @@
         src: ocp-web/source.rc
         dest: /root
 
-## ----------------------------------------------------------------------------
-## ..:: ocp-allnodes perparation ::..
-## ----------------------------------------------------------------------------
+# ## ----------------------------------------------------------------------------
+# ## ..:: ocp-allnodes perparation ::..
+# ## ----------------------------------------------------------------------------
 
-## Working on all nodes in the OCP Cluster
-- hosts: ocp-bootstrap
-  remote_user: root
-  tasks:
+# ## Working on all nodes in the OCP Cluster
+# - hosts: ocp-bootstrap
+#   remote_user: root
+#   tasks:
 
-    - name: download RHCOS Kernel from ocp-web
-      get_url:
-        url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
-        dest: /boot/vmlinuz-rhcos
+#     - name: download RHCOS Kernel from ocp-web
+#       get_url:
+#         url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
+#         dest: /boot/vmlinuz-rhcos
 
-    - name: download RHCOS Initramfs from ocp-web
-      get_url:
-        url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
-        dest: /boot/initramfs-rhcos.img
+#     - name: download RHCOS Initramfs from ocp-web
+#       get_url:
+#         url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
+#         dest: /boot/initramfs-rhcos.img
 

@@ -26,5 +26,5 @@
 
  # Configuration for the Prometheus client to spawn
  [[outputs.prometheus_client]]
-   listen = "{{ secondNetIf_ip }}:9126"
+   listen = "{{ ansible_host }}:9126"
    metric_version = 2

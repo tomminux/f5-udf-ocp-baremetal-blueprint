@@ -1,0 +1,191 @@
+## ----------------------------------------------------------------------------
+## ..:: ocp-web installation ::..
+## ----------------------------------------------------------------------------
+
+## Installing ocp-web Server
+- hosts: ocp-web
+  remote_user: root
+  tasks:
+
+    - name: Upgrading all packages to the latest version
+      apt:
+        update_cache: yes
+        upgrade: dist
+        
+    - name: Remove resolv.conf link
+      file:
+        path: /etc/resolv.conf
+        state: absent
+
+    - name: Copy resolv.conf file
+      copy:
+        src: resolv.conf
+        dest: /etc/resolv.conf
+
+    - name: setting hostname
+      template:
+        src: hostname.j2
+        dest: /etc/hostname
+
+    ## TELEGRAF
+    - name: Adding influx apt-key
+      apt_key:
+        url: https://repos.influxdata.com/influxdb.key
+        state: present
+
+    - name: Adding Influx apt reporisotries
+      shell: echo "deb https://repos.influxdata.com/ubuntu `lsb_release -cs` stable\n" > /etc/apt/sources.list.d/influxdb.list
+
+    - name: Upgrading all packages to the latest version
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Installing Telegraf
+      apt:
+        pkg:
+        - telegraf
+
+    - name: Copying Telegraf configuration file
+      template:
+        src: telegraf.conf.j2
+        dest: /etc/telegraf/telegraf.conf
+
+    ## Staring Telegraf Agent
+    - name: Restarting Telegraf agent
+      service:
+        name: telegraf
+        state: restarted
+
+    ## Installing NGINX OSS 
+    - name: installing nginx OSS
+      apt:
+        pkg:
+        - nginx    
+
+    - name: Copy nginx.conf files
+      copy:
+        src: ocp-web/
+        dest: /etc/nginx/
+
+    - name: starting nginx 
+      service:
+        name: nginx
+        state: started
+
+    - name: deleting nginx.conf original file
+      file:
+        path: /etc/nginx/nginx.conf
+        state: absent
+
+    - name: initial nginx config file
+      file:
+        src: /etc/nginx/nginx.conf-initial
+        dest: /etc/nginx/nginx.conf
+        state: link
+
+    - name: enabling nginx at boot time
+      service:
+        name: nginx
+        enabled: yes 
+
+    - name: starting nginx 
+      service:
+        name: nginx
+        state: restarted
+
+   ## Peparing "installations" directory
+    - name: Create /usr/share/nginx/html/installations directory
+      file:
+        path: /usr/share/nginx/html/installations
+        state: directory
+
+    - name: Changing "html" nginx dir permissions
+      shell: chmod -R g+srwx /usr/share/nginx/html/
+    
+    - name: download OCP related executables
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-install-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+    
+    - name: download OCP related executables
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-client-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+    
+    - name: download RHCOS related files
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
+        dest: /usr/share/nginx/html/installations
+    
+    - name: download RHCOS related files
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
+        dest: /usr/share/nginx/html/installations
+
+    - name: download RHCOS related files
+      get_url:
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-rootfs.x86_64.img
+        dest: /usr/share/nginx/html/installations
+
+    - name: Unarchive linux OCP Client
+      ansible.builtin.unarchive:
+        src: /usr/share/nginx/html/installations/openshift-client-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+        remote_src: yes
+
+    - name: Unarchive linux OCP Installer
+      ansible.builtin.unarchive:
+        src: /usr/share/nginx/html/installations/openshift-install-linux-{{ ocp_release }}.tar.gz
+        dest: /usr/share/nginx/html/installations
+        remote_src: yes
+
+    - name: Copy install-config.yaml file
+      template:
+        src: install-config.yaml.j2
+        dest: /usr/share/nginx/html/installations/install-config.yaml
+
+    - name: Copy install-config.yaml file (backup)
+      template:
+        src: install-config.yaml.j2
+        dest: /usr/share/nginx/html/installations/install-config.yaml-backup
+
+    - name: Openshift install preparation - Creating manifest files
+      shell: /usr/share/nginx/html/installations/openshift-install create manifests --dir=/usr/share/nginx/html/installations/
+
+    - name: Configuring masters as non schedulable
+      replace:
+        path: /usr/share/nginx/html/installations/manifests/cluster-scheduler-02-config.yml
+        regexp: 'true'
+        replace: "false"
+
+    - name: Openshift install preparation - Creating ignition files
+      shell: /usr/share/nginx/html/installations/openshift-install create ignition-configs --dir=/usr/share/nginx/html/installations/
+
+    - name: Openshift install preparation - Creating ignition files
+      shell: chmod o+r /usr/share/nginx/html/installations/*
+
+    - name: Copy source.rc for root
+      copy:
+        src: ocp-web/source.rc
+        dest: /root
+
+# ## ----------------------------------------------------------------------------
+# ## ..:: ocp-allnodes perparation ::..
+# ## ----------------------------------------------------------------------------
+
+# ## Working on all nodes in the OCP Cluster
+# - hosts: ocp-bootstrap
+#   remote_user: root
+#   tasks:
+
+#     - name: download RHCOS Kernel from ocp-web
+#       get_url:
+#         url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
+#         dest: /boot/vmlinuz-rhcos
+
+#     - name: download RHCOS Initramfs from ocp-web
+#       get_url:
+#         url: https://10.1.1.8:8080/installations/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
+#         dest: /boot/initramfs-rhcos.img
+

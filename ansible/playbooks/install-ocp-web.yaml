@@ -140,36 +140,6 @@
         dest: /usr/share/nginx/html/installations
         remote_src: yes
 
-    - name: Copy install-config.yaml file
-      template:
-        src: install-config.yaml.j2
-        dest: /usr/share/nginx/html/installations/install-config.yaml
-
-    - name: Copy install-config.yaml file (backup)
-      template:
-        src: install-config.yaml.j2
-        dest: /usr/share/nginx/html/installations/install-config.yaml-backup
-
-    - name: Openshift install preparation - Creating manifest files
-      shell: /usr/share/nginx/html/installations/openshift-install create manifests --dir=/usr/share/nginx/html/installations/
-
-    - name: Configuring masters as non schedulable
-      replace:
-        path: /usr/share/nginx/html/installations/manifests/cluster-scheduler-02-config.yml
-        regexp: 'true'
-        replace: "false"
-
-    - name: Openshift install preparation - Creating ignition files
-      shell: /usr/share/nginx/html/installations/openshift-install create ignition-configs --dir=/usr/share/nginx/html/installations/
-
-    - name: Openshift install preparation - Creating ignition files
-      shell: chmod o+r /usr/share/nginx/html/installations/*
-
-    - name: Copy source.rc for root
-      copy:
-        src: ocp-web/source.rc
-        dest: /root
-
 # ## ----------------------------------------------------------------------------
 # ## ..:: ocp-allnodes perparation ::..
 # ## ----------------------------------------------------------------------------

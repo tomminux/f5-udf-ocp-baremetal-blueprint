@@ -46,25 +46,26 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
     
 ## ..:: masters Configuration ::..
 
-    curl -O -L -J http://10.1.1.6:8080/installations/rhcos-4.7.0-x86_64-live-kernel-x86_64
-    curl -O -L -J http://10.1.1.6:8080/installations/rhcos-4.7.0-x86_64-live-initramfs.x86_64.img
+    sudo timedatectl set-timezone Europe/Rome
+    curl -O -L -J http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-kernel-x86_64
+    curl -O -L -J http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-4.7.0-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
     sudo mv rhcos-4.7.0-x86_64-live-initramfs.x86_64.img /boot/initramfs-rhcos.img
     IFACE=enp0s4
     
 ### master-1
     
-    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.7::10.1.1.1:255.255.255.0:master-1.ocp.x-wide.cloud:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.6:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.6:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
+    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.10::10.1.1.1:255.255.255.0:master-1.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
 ### master-2
     
-    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.8::10.1.1.1:255.255.255.0:master-2.ocp.x-wide.cloud:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.6:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.6:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
+    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.11::10.1.1.1:255.255.255.0:master-2.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
 ### master-3
     
-    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.9::10.1.1.1:255.255.255.0:master-3.ocp.x-wide.cloud:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.6:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.6:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
+    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.12::10.1.1.1:255.255.255.0:master-3.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
 ## ..:: workers Configuration ::..

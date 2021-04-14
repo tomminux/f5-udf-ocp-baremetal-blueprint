@@ -4,8 +4,13 @@
 - timezone on ocp-web -> OK
 - resolv.conf on ocp-web -> OK
 - clean installation directory --> OK
-- core user on bootstrap, masters and cores 
 - configure BIG-IP and apply AS3 configMap for udf-services -> OK
+
+- update DNSMASQ config as per Ulises instructions for *.apps.ocp.f5-udf.com wildcard record
+- core user on bootstrap, masters and cores 
+- remote installations directory on OCP-WEB
+- move installations directory creation and downloading file to "preparing..." ansible playbook
+
 
 
 # UDF Blueprint: codename-thor - LogFile
@@ -99,5 +104,11 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
 
     IFACE=enp0s4
     sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.14::10.1.1.1:255.255.255.0:worker-2.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/worker.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
+    sudo reboot
+    
+### worker-3
+
+    IFACE=enp0s4
+    sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.15::10.1.1.1:255.255.255.0:worker-3.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/worker.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     

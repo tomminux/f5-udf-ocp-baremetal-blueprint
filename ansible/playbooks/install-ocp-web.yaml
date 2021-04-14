@@ -98,51 +98,6 @@
         name: nginx
         state: restarted
 
-   ## Peparing "installations" directory
-    - name: Create /usr/share/nginx/html/installations directory
-      file:
-        path: /usr/share/nginx/html/installations
-        state: directory
-
-    - name: Changing "html" nginx dir permissions
-      shell: chmod -R g+srwx /usr/share/nginx/html/
-    
-    - name: download OCP related executables
-      get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-install-linux-{{ ocp_release }}.tar.gz
-        dest: /usr/share/nginx/html/installations
-    
-    - name: download OCP related executables
-      get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_release }}/openshift-client-linux-{{ ocp_release }}.tar.gz
-        dest: /usr/share/nginx/html/installations
-    
-    - name: download RHCOS related files
-      get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
-        dest: /usr/share/nginx/html/installations
-    
-    - name: download RHCOS related files
-      get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
-        dest: /usr/share/nginx/html/installations
-
-    - name: download RHCOS related files
-      get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-rootfs.x86_64.img
-        dest: /usr/share/nginx/html/installations
-
-    - name: Unarchive linux OCP Client
-      ansible.builtin.unarchive:
-        src: /usr/share/nginx/html/installations/openshift-client-linux-{{ ocp_release }}.tar.gz
-        dest: /usr/share/nginx/html/installations
-        remote_src: yes
-
-    - name: Unarchive linux OCP Installer
-      ansible.builtin.unarchive:
-        src: /usr/share/nginx/html/installations/openshift-install-linux-{{ ocp_release }}.tar.gz
-        dest: /usr/share/nginx/html/installations
-        remote_src: yes
 
 # ## ----------------------------------------------------------------------------
 # ## ..:: ocp-allnodes perparation ::..

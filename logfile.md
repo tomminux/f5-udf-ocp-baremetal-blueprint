@@ -69,20 +69,22 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-4.7.0-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
     sudo mv rhcos-4.7.0-x86_64-live-initramfs.x86_64.img /boot/initramfs-rhcos.img
-    IFACE=enp0s4
     
 ### master-1
     
+    IFACE=enp0s4
     sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.10::10.1.1.1:255.255.255.0:master-1.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
 ### master-2
     
+    IFACE=enp0s4
     sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.11::10.1.1.1:255.255.255.0:master-2.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
 ### master-3
     
+    IFACE=enp0s4
     sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.12::10.1.1.1:255.255.255.0:master-3.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/master.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
@@ -112,3 +114,13 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
     sudo grubby --add-kernel=/boot/vmlinuz-rhcos --args="ip=10.1.1.15::10.1.1.1:255.255.255.0:worker-3.ocp.f5-udf.com:$IFACE:none nameserver=10.1.1.4 rd.neednet=1 coreos.inst=yes coreos.inst.install_dev=vda coreos.live.rootfs_url=http://10.1.1.8:8080/installations/rhcos-4.7.0-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://10.1.1.8:8080/installations/worker.ign" --initrd=/boot/initramfs-rhcos.img --make-default --title=rhcos
     sudo reboot
     
+## Post Installation 
+
+    while true ; do oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve ; sleep 5 ; done
+
+    watch oc get co
+
+Make masters schedulable
+
+    oc edit schedulers.config.openshift.io cluster
+

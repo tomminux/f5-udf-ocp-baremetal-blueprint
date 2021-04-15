@@ -124,3 +124,7 @@ Make masters schedulable
 
     oc edit schedulers.config.openshift.io cluster
 
+Check if everything is running fine:
+
+    while true ; do oc get pod -A | grep -vi running | grep -vi completed ; sleep 5 ; clear ; done
+

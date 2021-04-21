@@ -54,7 +54,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
 ## ..:: ocp-bootstrap Configuration ::..
 
     sudo timedatectl set-timezone Europe/Rome
-    RHCOS_RELEASE=4.6.8
+    RHCOS_RELEASE=4.7.0
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -65,7 +65,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
     
 ## ..:: masters Configuration ::..
 
-    RHCOS_RELEASE=4.6.8
+    RHCOS_RELEASE=4.7.0
     sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
@@ -93,7 +93,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
 ## ..:: workers Configuration ::..
 
     sudo timedatectl set-timezone Europe/Rome
-    RHCOS_RELEASE=4.6.8
+    RHCOS_RELEASE=4.7.0
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos

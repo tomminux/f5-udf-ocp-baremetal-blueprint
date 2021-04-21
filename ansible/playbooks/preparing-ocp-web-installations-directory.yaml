@@ -28,17 +28,17 @@
     
     - name: download RHCOS related files
       get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{{ rhcos_branch }}/latest/rhcos-{{ rhcos_release }}-x86_64-live-initramfs.x86_64.img
         dest: /usr/share/nginx/html/installations
     
     - name: download RHCOS related files
       get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{{ rhcos_branch }}/latest/rhcos-{{ rhcos_release }}-x86_64-live-kernel-x86_64
         dest: /usr/share/nginx/html/installations
 
     - name: download RHCOS related files
       get_url:
-        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-{{ rhcos_release }}-x86_64-live-rootfs.x86_64.img
+        url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{{ rhcos_branch }}/latest/rhcos-{{ rhcos_release }}-x86_64-live-rootfs.x86_64.img
         dest: /usr/share/nginx/html/installations
 
     - name: Unarchive linux OCP Client

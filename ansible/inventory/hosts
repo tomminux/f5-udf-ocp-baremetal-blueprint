@@ -8,35 +8,3 @@ rhcos_branch=4.7
 rhcos_release=4.7.0
 redhat_pull_secret='Enter the text from your Pull Secrets'
 udf_access_public_key='UDF Access Public Key -> get it from a centos user on a centos box in UDF'
-
-[ocp_bootstrap]
-ocp-bootstrap ansible_host=10.1.1.9 hostname=ocp-bootstrp
-
-[ocp_bootstrap:vars]
-ansible_python_interpreter=/usr/bin/python3
-ocp_release=4.7.4
-rhcos_release=4.7.0
-
-[ocp_masters]
-ocp-master1 ansible_host=10.1.1.10 hostname=ocp-master1
-ocp-master2 ansible_host=10.1.1.11 hostname=ocp-master2
-ocp-master3 ansible_host=10.1.1.12 hostname=ocp-master3
-
-[ocp_workers]
-ocp-worker1 ansible_host=10.1.1.13 hostname=ocp-worker1
-ocp-worker2 ansible_host=10.1.1.14 hostname=ocp-worker2
-
-[ocp_allnodes:children]
-ocp_masters
-ocp_workers
-ocp_bootstrap
-
-[ocp_masters:vars]
-ansible_python_interpreter=/usr/bin/python3
-ocp_release=4.7.4
-rhcos_release=4.7.0
-
-[ocp_workers:vars]
-ansible_python_interpreter=/usr/bin/python3
-ocp_release=4.7.4
-rhcos_release=4.7.0

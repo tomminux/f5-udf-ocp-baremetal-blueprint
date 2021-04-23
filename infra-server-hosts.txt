@@ -50,6 +50,7 @@ ff02::3 ip6-allhosts
 # ..:: DNS for worker nodes ::..
 10.1.1.13   worker-1.ocp.f5-udf.com                worker-1
 10.1.1.14   worker-2.ocp.f5-udf.com                worker-2
+10.1.1.15   worker-3.ocp.f5-udf.com                worker-3
 
 # ..:: ETCd cluster lives on the masters ::..
 10.1.1.10   etcd-0.ocp.f5-udf.com                  etcd-0

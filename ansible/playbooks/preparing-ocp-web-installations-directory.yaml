@@ -82,3 +82,34 @@
       copy:
         src: ocp-web/source.rc
         dest: /root
+
+    - name: Creating .kube directory for root
+      file:
+        path: /root/.kube
+        state: directory
+
+    - name: Creating .kube directory for ubuntu
+      file:
+        owner: ubuntu 
+        path: /home/ubuntu/.kube
+        state: directory      
+        
+    - name: Copy kubeconfig file to .kube root directory
+      copy:
+        remote_src: yes
+        src: /usr/share/nginx/html/installations/auth/kubeconfig
+        dest: /root/.kube
+
+    - name: Copy kubeconfig file to .kube ubuntu directory
+      copy:
+        remote_src: yes
+        owner: ubuntu
+        src: /usr/share/nginx/html/installations/auth/kubeconfig
+        dest: /home/ubuntu/.kube
+
+    - name: Copy oc binary to /usr/local/bin
+      copy:
+        remote_src: yes
+        src: /usr/share/nginx/html/installations/oc
+        dest: /usr/local/bin
+

@@ -1,15 +1,6 @@
 # IMPORTANT --> UPDATE THE BLUEPRINT
 
-- nginx conf files --> OK
-- timezone on ocp-web -> OK
-- resolv.conf on ocp-web -> OK
-- clean installation directory --> OK
-- configure BIG-IP and apply AS3 configMap for udf-services -> OK
 
-- update DNSMASQ config as per Ulises instructions for *.apps.ocp.f5-udf.com wildcard record
-- core user on bootstrap, masters and cores 
-- remote installations directory on OCP-WEB
-- move installations directory creation and downloading file to "preparing..." ansible playbook
 
 
 
@@ -54,7 +45,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
 ## ..:: ocp-bootstrap Configuration ::..
 
     sudo timedatectl set-timezone Europe/Rome
-    RHCOS_RELEASE=4.7.0
+    RHCOS_RELEASE=4.7.7
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -65,7 +56,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
     
 ## ..:: masters Configuration ::..
 
-    RHCOS_RELEASE=4.7.0
+    RHCOS_RELEASE=4.7.7
     sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
@@ -93,7 +84,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
 ## ..:: workers Configuration ::..
 
     sudo timedatectl set-timezone Europe/Rome
-    RHCOS_RELEASE=4.7.0
+    RHCOS_RELEASE=4.7.7
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos

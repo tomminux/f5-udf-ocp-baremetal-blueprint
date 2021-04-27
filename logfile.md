@@ -2,7 +2,7 @@
 
     Re-clone repo 
     change ansible playbook to install k9s on ocp-web
-    re-run ansible playbook to install k9s
+    re-run ansible playbook to install k9s on ocp-web
     
 
 

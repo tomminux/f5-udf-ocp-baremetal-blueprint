@@ -117,6 +117,15 @@
         path: /home/ubuntu/.profile
         line: PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
 
+    - name: Installing gcc through Brew Package manager
+      become: true
+      become_user: ubuntu
+      homebrew:
+        name: gcc
+        state: present
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/home/linuxbrew/.linuxbrew/bin"
+
     - name: Installing k9s through Brew Package manager
       become: true
       become_user: ubuntu

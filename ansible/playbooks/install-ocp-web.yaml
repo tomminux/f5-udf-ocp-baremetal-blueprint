@@ -98,6 +98,36 @@
         name: nginx
         state: restarted
 
+    ## Installing k9s
+    - name: Downloading -brew- installation file 
+      get_url:
+        url: https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+        dest: /home/ubuntu/install-k9s.sh
+        mode: '0755'
+
+    - name: Installing -brew-
+      become: true
+      become_user: ubuntu
+      command: /bin/bash -c "echo'y' | /home/ubuntu/install-k9s.sh"
+      args: 
+         chdir: /home/ubuntu/
+
+    - name: Adding -brew- bin dir to PATH
+      lineinfile:
+        path: /home/ubuntu/.profile
+        line: PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
+
+    - name: Installing k9s through Brew Package manager
+      become: true
+      become_user: ubuntu
+      homebrew:
+        name: derailed/k9s/k9s
+        state: present
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/home/linuxbrew/.linuxbrew/bin"
+
+
+
 
 # ## ----------------------------------------------------------------------------
 # ## ..:: ocp-allnodes perparation ::..

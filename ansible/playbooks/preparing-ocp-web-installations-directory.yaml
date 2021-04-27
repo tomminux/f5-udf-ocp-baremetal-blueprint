@@ -98,18 +98,18 @@
       copy:
         remote_src: yes
         src: /usr/share/nginx/html/installations/auth/kubeconfig
-        dest: /root/.kube
+        dest: /root/.kube/config
 
     - name: Copy kubeconfig file to .kube ubuntu directory
       copy:
         remote_src: yes
         owner: ubuntu
         src: /usr/share/nginx/html/installations/auth/kubeconfig
-        dest: /home/ubuntu/.kube
+        dest: /home/ubuntu/.kube/config
 
     - name: Copy oc binary to /usr/local/bin
       copy:
         remote_src: yes
         src: /usr/share/nginx/html/installations/oc
         dest: /usr/local/bin
-
+        mode: 0755

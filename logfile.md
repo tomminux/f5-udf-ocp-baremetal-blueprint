@@ -1,5 +1,9 @@
 # IMPORTANT --> UPDATE THE BLUEPRINT
 
+    Re-clone repo 
+    change ansible playbook to install k9s on ocp-web
+    re-run ansible playbook to install k9s
+    
 
 
 
@@ -110,7 +114,7 @@ chown -R ubuntu:ubuntu /home/ubuntu/.kube
     
 ## Post Installation 
 
-    while true ; do oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve ; sleep 5 ; done
+    while true ; do oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve ; sleep 5 ; clear ; done
 
     watch oc get co
 

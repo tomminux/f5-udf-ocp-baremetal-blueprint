@@ -3,7 +3,6 @@
 ## Blueprint deployment
 
 Deploy the blueprint.   
-**IMPORTANT NOTE**: I tried multiple times to deploy this in London and/or Amsterdam, having a lot of performance issues. For the time being, it is better to deploy this in Oregon: this was tested and running fine. 
 
 Start the Deployment: it is going to take a while to boot up everything.
 

@@ -75,7 +75,8 @@ Connect via SSH to RHEL box named "ocp-bootstrap" (normal SSH, not the one for "
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
+    sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -112,7 +113,7 @@ Connect via SSH to RHEL box named "ocp-master1" (normal SSH, not the one for "co
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
     sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
@@ -131,7 +132,7 @@ Connect via SSH to RHEL box named "ocp-master2" (normal SSH, not the one for "co
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
     sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
@@ -150,7 +151,7 @@ Connect via SSH to RHEL box named "ocp-master3" (normal SSH, not the one for "co
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
     sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
@@ -196,7 +197,7 @@ Connect via SSH to RHEL box named "ocp-worker1" (normal SSH, not the one for "co
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -214,7 +215,7 @@ Connect via SSH to RHEL box named "ocp-worker2" (normal SSH, not the one for "co
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -232,7 +233,7 @@ Connect via SSH to RHEL box named "ocp-worker3" (normal SSH, not the one for "co
 
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
-    RHCOS_RELEASE=4.7.7
+    RHCOS_RELEASE=4.8.2
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos

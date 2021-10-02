@@ -180,10 +180,12 @@ master-2.ocp.f5-udf.com   Ready    master   8m16s   v1.20.0+c8905da
 master-3.ocp.f5-udf.com   Ready    master   102s    v1.20.0+c8905da
 ```
 
-If you get an error like this, proceed to the following step, modifying the NGINX configuration and retry di "oc get nodes" command.
+If you get an error like this: 
 
     root@ocp-web:~# oc get nodes
     Error from server (InternalError): an error on the server ("") has prevented the request from succeeding
+
+proceed to the following step, modifying the NGINX configuration and retry di "oc get nodes" command.
 
 ## ocp-worker{1,2,3} setup
 
@@ -275,6 +277,20 @@ worker-1.ocp.f5-udf.com   Ready    worker   2m34s   v1.20.0+c8905da
 worker-2.ocp.f5-udf.com   Ready    worker   2m28s   v1.20.0+c8905da
 worker-3.ocp.f5-udf.com   Ready    worker   60s     v1.20.0+c8905da
 ```
+
+## Final Step for the NGINX OCP Load Balancer
+
+Connect to the ocp-web box via SSH and change NGINX configuration:
+
+    sudo su -
+    cd /etc/nginx/
+    rm nginx.conf
+    ln -s nginx.conf-final nginx.conf
+    systemctl restart nginx
+    systemctl status nginx
+
+## Final Checks
+
 At this point you can stop the two commands and check the detailed status of the cluster with:
 
     oc get pods -A | grep -vi running | grep -vi completed
@@ -287,3 +303,4 @@ You can watch this command until you get to "0":
 When all pods are in a "running" or "completed" status, you can get a general view of the cluster operator status with
 
     oc get co
+

@@ -87,9 +87,9 @@ Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to y
 
 Now follow the reboot process on the console in the browser. It will take some time and a couple of reboot; when RHCOS will be ready, connect to it using the "SSH (core user)" method and verify that everything is good with
 
-    journalctl -b -f -u release-image.service -u bootkube.service
+    journalctl -b -u release-image.service -u bootkube.service | grep Created | grep 99_openshift
     
-you should read somthing like:
+you should read something like:
 
     Created "99_openshift-cluster-api_master-user-data-secret.yaml" secrets.v1./master-user-data -n openshift-machine-api
     Created "99_openshift-cluster-api_worker-user-data-secret.yaml" secrets.v1./worker-user-data -n openshift-machine-api
@@ -180,6 +180,11 @@ master-2.ocp.f5-udf.com   Ready    master   8m16s   v1.20.0+c8905da
 master-3.ocp.f5-udf.com   Ready    master   102s    v1.20.0+c8905da
 ```
 
+If you get an error like this, proceed to the following step, modifying the NGINX configuration and retry di "oc get nodes" command.
+
+    root@ocp-web:~# oc get nodes
+    Error from server (InternalError): an error on the server ("") has prevented the request from succeeding
+
 ## ocp-worker{1,2,3} setup
 
 First of all, connect to the ocp-web box via SSH and change NGINX configuration:
@@ -198,6 +203,7 @@ Connect via SSH to RHEL box named "ocp-worker1" (normal SSH, not the one for "co
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
     RHCOS_RELEASE=4.8.2
+    sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -216,6 +222,7 @@ Connect via SSH to RHEL box named "ocp-worker2" (normal SSH, not the one for "co
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
     RHCOS_RELEASE=4.8.2
+    sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
@@ -234,6 +241,7 @@ Connect via SSH to RHEL box named "ocp-worker3" (normal SSH, not the one for "co
 Issue the following commands (**CHANGE the RHCOS_RELEASE variable according to your configuration**)
 
     RHCOS_RELEASE=4.8.2
+    sudo timedatectl set-timezone Europe/Rome
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64
     curl -O -L -J http://10.1.1.8:8080/installations/rhcos-$RHCOS_RELEASE-x86_64-live-initramfs.x86_64.img
     sudo mv rhcos-$RHCOS_RELEASE-x86_64-live-kernel-x86_64 /boot/vmlinuz-rhcos
